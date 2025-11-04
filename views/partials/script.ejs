@@ -1,0 +1,29 @@
+<script>
+    let authorInfoSection = document.querySelector('#authorInfo')
+    authorInfoSection.style.display = 'none';
+    let authorList = document.querySelectorAll('.authors')
+    for (let author of authorList) {
+        author.addEventListener("click", getAuthorInfo)
+    }
+
+    function $(select) {
+        return document.querySelector(select)
+    }
+    function $a(select) {
+        return document.querySelectorAll(select)
+    }
+    async function getAuthorInfo() {
+        let authorId = this.getAttribute('authorId')
+        let url = "/api/authors/" + authorId;
+        let response = await fetch(url)
+        let data = await response.json()
+        console.log(data)
+
+        $("#authorName").textContent = data[0].firstName + " " + data[0].lastName
+        $("#authorImage").src = data[0].portrait
+        $('#authorBio').textContent = data[0].biography
+        console.log(data[0].biography)
+        $('#modalTitle').textContent = data[0].firstName + " " + data[0].lastName
+        authorInfoSection.style.display = 'block';
+    }
+</script>
